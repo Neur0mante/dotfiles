@@ -1,0 +1,35 @@
+TMUX ALT-BASED CHEATSHEET
+=========================
+#
+PREFIX
+Ctrl + b        tmux prefix (fallback)
+#
+PANES
+Alt + W/A/S/D   move between panes
+Alt + Shift + WASD resize panes
+Alt + F         split vertically
+Alt + G         split horizontally
+Alt + P         pane ? new window
+Alt + O         pane ? existing window
+Alt + Z         zoom pane
+Alt + X         kill pane
+#
+WINDOWS
+Alt + Q / E     previous / next window
+Alt + R         new window
+Alt + &         kill window
+#
+SESSIONS
+Alt + T           new session
+Alt + Shift + T   list sessions
+Alt + Shift + Q/E previous / next session
+Alt + Shift + X   kill session (safe)
+#
+COPY / CLIPBOARD
+Alt + C         copy mode
+Alt + V         paste
+Alt + B         clipboard history
+#
+HELP
+Alt + H         view this cheatsheet
+Alt + Shift + H closes this cheatsheet
