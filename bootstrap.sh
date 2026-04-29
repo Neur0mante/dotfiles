@@ -22,19 +22,27 @@ fi
 log "Using package manager: $PM"
 
 # --------------------------
-# broot (better repo on Debian/Ubuntu)
+# broot (Azlux repo, Debian/Ubuntu)
 # --------------------------
 if [[ "$PM" == "apt" ]]; then
-    if ! apt-cache policy | grep -q packages.azlux.fr; then
-        log "Adding Azlux repository for broot"
-        sudo mkdir -p /etc/apt/keyrings
-        curl -fsSL https://packages.azlux.fr/key.gpg \
-          | sudo gpg --dearmor -o /etc/apt/keyrings/azlux.gpg
+    AZLUX_KEYRING="/usr/share/keyrings/azlux-archive-keyring.gpg"
+    AZLUX_SOURCE="/etc/apt/sources.list.d/azlux.sources"
 
-        echo \
-"deb [signed-by=/etc/apt/keyrings/azlux.gpg] https://packages.azlux.fr/also stable main" \
-          | sudo tee /etc/apt/sources.list.d/azlux.list > /dev/null
+    if [[ ! -f "$AZLUX_KEYRING" ]]; then
+        log "Installing Azlux keyring (broot)"
+        sudo mkdir -p /usr/share/keyrings
+        sudo wget -qO "$AZLUX_KEYRING" https://azlux.fr/repo.gpg
+    fi
 
+    if [[ ! -f "$AZLUX_SOURCE" ]]; then
+        log "Adding Azlux APT source (broot)"
+        sudo tee "$AZLUX_SOURCE" > /dev/null <<'EOF'
+Types: deb
+URIs: http://packages.azlux.fr/debian/
+Suites: trixie
+Components: main
+Signed-By: /usr/share/keyrings/azlux-archive-keyring.gpg
+EOF
         sudo apt update
     fi
 
