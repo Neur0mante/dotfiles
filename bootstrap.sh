@@ -40,6 +40,20 @@ case "$PM" in
 esac
 
 # --------------------------
+# fzf shell integration
+# --------------------------
+if command -v fzf >/dev/null; then
+    log "Setting up fzf integration"
+    if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+        mkdir -p ~/.config/fzf
+        ln -sf /usr/share/fzf/key-bindings.zsh ~/.config/fzf/key-bindings.zsh
+        ln -sf /usr/share/fzf/completion.zsh ~/.config/fzf/completion.zsh
+    fi
+fi
+
+
+
+# --------------------------
 # Set zsh as default shell
 # --------------------------
 # if [[ "$SHELL" != "$(command -v zsh)" ]]; then
@@ -55,6 +69,11 @@ log "Linking dotfiles"
 ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 # ln -sf "$DOTFILES/zsh/zprofile" "$HOME/.zprofile"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+
+log "Linking neovim config"
+mkdir -p ~/.config
+ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
+
 
 # --------------------------
 # Install Oh My Zsh (optional)
@@ -72,5 +91,12 @@ if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
     log "Installing tmux plugin manager"
     git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
+
+
+
+if command -v br >/dev/null; then
+    log "broot installed"
+fi
+
 
 log "Bootstrap completed. Restart your shell."

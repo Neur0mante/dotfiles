@@ -110,11 +110,32 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 
+# Editor
+export EDITOR=nvim
+export VISUAL=nvim
+
+# fzf
+if [[ -f ~/.config/fzf/key-bindings.zsh ]]; then
+  source ~/.config/fzf/key-bindings.zsh
+  source ~/.config/fzf/completion.zsh
+fi
+
+export FZF_DEFAULT_OPTS='
+  --height 40%
+  --layout=reverse
+  --border
+'
 
 # Simple aliases
 alias ll="ls -lah"
 alias la="ls -A"
 alias l="ls -CF"
+alias vf='nvim $(fzf)'
+alias cf='cd $(find . -type d | fzf)'
+alias b='br -s'
+alias bf='br --only-folders'
+
+
 
 # lt+h/l/j/k shell line navigation
 for keymap in emacs viins; do
