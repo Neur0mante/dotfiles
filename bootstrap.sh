@@ -22,6 +22,35 @@ fi
 log "Using package manager: $PM"
 
 # --------------------------
+# broot (better repo on Debian/Ubuntu)
+# --------------------------
+if [[ "$PM" == "apt" ]]; then
+    if ! apt-cache policy | grep -q packages.azlux.fr; then
+        log "Adding Azlux repository for broot"
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://packages.azlux.fr/key.gpg \
+          | sudo gpg --dearmor -o /etc/apt/keyrings/azlux.gpg
+
+        echo \
+"deb [signed-by=/etc/apt/keyrings/azlux.gpg] https://packages.azlux.fr/also stable main" \
+          | sudo tee /etc/apt/sources.list.d/azlux.list > /dev/null
+
+        sudo apt update
+    fi
+
+    sudo apt install -y broot
+fi
+
+case "$PM" in
+    dnf)
+        sudo dnf install -y broot
+        ;;
+    pacman)
+        sudo pacman -Sy --noconfirm broot
+        ;;
+esac
+
+# --------------------------
 # Install packages
 # --------------------------
 log "Installing packages"
