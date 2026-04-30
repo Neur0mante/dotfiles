@@ -1,7 +1,4 @@
 zsh
-tmux
 git
 curl
 wget
-fzf
-neovim
