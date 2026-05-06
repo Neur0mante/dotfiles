@@ -188,19 +188,6 @@ if [[ ! -x "$NVIM_BIN" ]]; then
     chmod +x "$NVIM_BIN"
 fi
 
-
-# --------------------------
-# fzf shell integration
-# --------------------------
-if command -v fzf >/dev/null; then
-    log "Setting up fzf integration"
-    if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
-        mkdir -p ~/.config/fzf
-        ln -sf /usr/share/fzf/key-bindings.zsh ~/.config/fzf/key-bindings.zsh
-        ln -sf /usr/share/fzf/completion.zsh ~/.config/fzf/completion.zsh
-    fi
-fi
-
 # --------------------------
 # Set zsh as default shell
 # --------------------------
@@ -241,7 +228,6 @@ log "Linking neovim config"
 mkdir -p ~/.config
 ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
 
-
 # --------------------------
 # Install Oh My Zsh (optional)
 # --------------------------
@@ -259,6 +245,17 @@ if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
     git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
+# --------------------------
+# fzf shell integration
+# --------------------------
+if command -v fzf >/dev/null; then
+    log "Setting up fzf integration"
+    if [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+        mkdir -p ~/.config/fzf
+        ln -sf /usr/share/fzf/key-bindings.zsh ~/.config/fzf/key-bindings.zsh
+        ln -sf /usr/share/fzf/completion.zsh ~/.config/fzf/completion.zsh
+    fi
+fi
 
 
 if command -v br >/dev/null; then
