@@ -157,10 +157,13 @@ FZF_BIN="$HOME/.local/bin/fzf"
 if [[ ! -x "$FZF_BIN" ]]; then
     log "Installing fzf (binary)"
     mkdir -p "$HOME/.local/bin"
-    curl -L \
-      https://github.com/junegunn/fzf/releases/latest/download/fzf-linux_amd64 \
-      -o "$FZF_BIN"
-    chmod +x "$FZF_BIN"
+    FZF_VERSION="0.72.0"
+    FZF_ARCHIVE="fzf-${FZF_VERSION}-linux_amd64.tar.gz"
+    curl -LO https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/${FZF_ARCHIVE} \
+    -o "$HOME/.local/bin/${FZF_ARCHIVE}"
+    tar xf "$HOME/.local/bin/${FZF_ARCHIVE}"
+    chmod +x fzf
+    rm "$HOME/.local/bin/${FZF_ARCHIVE}"
 fi
 
 
