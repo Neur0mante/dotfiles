@@ -107,8 +107,8 @@ cd /tmp/go-download
 LATEST_GO=$(curl -s https://go.dev/dl/?mode=json | grep -oP '"version":\s*"\K[^"]+' | head -1)
 
 if [[ -n "$LATEST_GO" ]]; then
-    GO_ARCHIVE="go${LATEST_GO}.linux-amd64.tar.gz"
-    curl -LO "https://go.dev/dl/${GO_ARCHIVE}"
+    GO_ARCHIVE="${LATEST_GO}.linux-amd64.tar.gz"
+    curl -fL -O "https://go.dev/dl/${GO_ARCHIVE}"
     sudo rm -rf /usr/local/go
     sudo tar -C /usr/local -xzf "${GO_ARCHIVE}"
     log "Go ${LATEST_GO} installed"
@@ -177,15 +177,15 @@ fi
 # --------------------------
 NVIM_BIN="$HOME/.local/bin/nvim"
 
-if [[ ! -x "$NVIM_BIN" ]]; then
-    log "Installing neovim (AppImage)"
+if [ ! -x "$NVIM_BIN" ]; then
+    log "Installing neovim AppImage"
     mkdir -p "$HOME/.local/bin"
 
-    curl -L \
-      https://github.com/neovim/neovim/releases/latest/download/nvim.appimage \
-      -o "$NVIM_BIN"
+    curl -fL \
+        "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage" \
+        -o "$NVIM_BIN"
 
-    chmod +x "$NVIM_BIN"
+    chmod u+x "$NVIM_BIN"
 fi
 
 # --------------------------
@@ -219,7 +219,11 @@ fi
 log "Linking dotfiles"
 
 mkdir -p "$HOME/.tmux"
-ln -sf "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+if [ -e "$HOME/.zshrc" ] && [ ! -L "$HOME/.zshrc" ]; then
+    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+fi
+
+ln -sfn "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
 # ln -sf "$DOTFILES/zsh/zprofile" "$HOME/.zprofile"
 ln -sf "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$DOTFILES/tmux/cheatsheet.txt" "$HOME/.tmux/cheatsheet.txt"
